@@ -1,0 +1,592 @@
+{
+    "system_info": {
+        "system": "Linux",
+        "node_name": "sre-muhfalihr",
+        "release": "6.8.0-45-generic",
+        "version": "#45-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug 30 12:02:04 UTC 2024",
+        "machine": "x86_64",
+        "processor": "x86_64"
+    },
+    "cpu_info": {
+        "cpu_count_physical": 4,
+        "cpu_count_logical": 8,
+        "cpu_percent": 5.0,
+        "cpu_freq": {
+            "current": 771.6225,
+            "min": 400.0,
+            "max": 3400.0
+        },
+        "cpu_times": {
+            "user": 27768.21,
+            "nice": 321.37,
+            "system": 7902.82,
+            "idle": 463225.75,
+            "iowait": 839.19,
+            "irq": 0.0,
+            "softirq": 336.53,
+            "steal": 0.0,
+            "guest": 0.0,
+            "guest_nice": 0.0
+        },
+        "cpu_stats": {
+            "ctx_switches": 228965501,
+            "interrupts": 188191775,
+            "soft_interrupts": 151419597,
+            "syscalls": 0
+        }
+    },
+    "gpu_info": [],
+    "memory_info": {
+        "physical_memory": {
+            "total": 20699828224,
+            "available": 13278134272,
+            "used": 6022696960,
+            "free": 7641239552,
+            "percent_used": 35.9
+        },
+        "swap_memory": {
+            "total": 2147479552,
+            "used": 0,
+            "free": 2147479552,
+            "percent_used": 0.0
+        }
+    },
+    "disk_info": [
+        {
+            "device": "/dev/sda3",
+            "mountpoint": "/",
+            "fstype": "ext4",
+            "opts": "rw,relatime,errors=remount-ro",
+            "total_space": 250373009408,
+            "used_space": 90785693696,
+            "free_space": 146794532864,
+            "percent_usage": 38.2
+        },
+        {
+            "device": "/dev/loop0",
+            "mountpoint": "/snap/firefox/3836",
+            "fstype": "squashfs",
+            "opts": "ro,nodev,relatime,errors=continue,threads=single",
+            "total_space": 279707648,
+            "used_space": 279707648,
+            "free_space": 0,
+            "percent_usage": 100.0
+        },
+        {
+            "device": "/dev/loop1",
+            "mountpoint": "/snap/firefox/4336",
+            "fstype": "squashfs",
+            "opts": "ro,nodev,relatime,errors=continue,threads=single",
+            "total_space": 283901952,
+            "used_space": 283901952,
+            "free_space": 0,
+            "percent_usage": 100.0
+        },
+        {
+            "device": "/dev/loop2",
+            "mountpoint": "/snap/gnome-42-2204/141",
+            "fstype": "squashfs",
+            "opts": "ro,nodev,relatime,errors=continue,threads=single",
+            "total_space": 521142272,
+            "used_space": 521142272,
+            "free_space": 0,
+            "percent_usage": 100.0
+        },
+        {
+            "device": "/dev/loop3",
+            "mountpoint": "/snap/gtk-common-themes/1535",
+            "fstype": "squashfs",
+            "opts": "ro,nodev,relatime,errors=continue,threads=single",
+            "total_space": 96206848,
+            "used_space": 96206848,
+            "free_space": 0,
+            "percent_usage": 100.0
+        },
+        {
+            "device": "/dev/loop5",
+            "mountpoint": "/snap/snapd/20671",
+            "fstype": "squashfs",
+            "opts": "ro,nodev,relatime,errors=continue,threads=single",
+            "total_space": 42467328,
+            "used_space": 42467328,
+            "free_space": 0,
+            "percent_usage": 100.0
+        },
+        {
+            "device": "/dev/loop4",
+            "mountpoint": "/snap/snap-store/959",
+            "fstype": "squashfs",
+            "opts": "ro,nodev,relatime,errors=continue,threads=single",
+            "total_space": 12976128,
+            "used_space": 12976128,
+            "free_space": 0,
+            "percent_usage": 100.0
+        },
+        {
+            "device": "/dev/loop6",
+            "mountpoint": "/snap/snapd/21759",
+            "fstype": "squashfs",
+            "opts": "ro,nodev,relatime,errors=continue,threads=single",
+            "total_space": 40763392,
+            "used_space": 40763392,
+            "free_space": 0,
+            "percent_usage": 100.0
+        },
+        {
+            "device": "/dev/loop7",
+            "mountpoint": "/snap/snapd-desktop-integration/157",
+            "fstype": "squashfs",
+            "opts": "ro,nodev,relatime,errors=continue,threads=single",
+            "total_space": 524288,
+            "used_space": 524288,
+            "free_space": 0,
+            "percent_usage": 100.0
+        },
+        {
+            "device": "/dev/loop8",
+            "mountpoint": "/snap/snapd-desktop-integration/83",
+            "fstype": "squashfs",
+            "opts": "ro,nodev,relatime,errors=continue,threads=single",
+            "total_space": 524288,
+            "used_space": 524288,
+            "free_space": 0,
+            "percent_usage": 100.0
+        },
+        {
+            "device": "/dev/loop9",
+            "mountpoint": "/snap/telegram-desktop/5895",
+            "fstype": "squashfs",
+            "opts": "ro,nodev,relatime,errors=continue,threads=single",
+            "total_space": 466616320,
+            "used_space": 466616320,
+            "free_space": 0,
+            "percent_usage": 100.0
+        },
+        {
+            "device": "/dev/sda3",
+            "mountpoint": "/var/snap/firefox/common/host-hunspell",
+            "fstype": "ext4",
+            "opts": "ro,noexec,noatime,errors=remount-ro",
+            "total_space": 250373009408,
+            "used_space": 90785693696,
+            "free_space": 146794532864,
+            "percent_usage": 38.2
+        },
+        {
+            "device": "/dev/sda2",
+            "mountpoint": "/boot/efi",
+            "fstype": "vfat",
+            "opts": "rw,relatime,fmask=0077,dmask=0077,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro",
+            "total_space": 536834048,
+            "used_space": 6434816,
+            "free_space": 530399232,
+            "percent_usage": 1.2
+        }
+    ],
+    "disk_io_info": {
+        "loop0": {
+            "read_count": 9,
+            "write_count": 0,
+            "read_bytes": 11264,
+            "write_bytes": 0,
+            "read_time": 233,
+            "write_time": 0
+        },
+        "loop1": {
+            "read_count": 9,
+            "write_count": 0,
+            "read_bytes": 12288,
+            "write_bytes": 0,
+            "read_time": 152,
+            "write_time": 0
+        },
+        "loop2": {
+            "read_count": 9,
+            "write_count": 0,
+            "read_bytes": 13312,
+            "write_bytes": 0,
+            "read_time": 139,
+            "write_time": 0
+        },
+        "loop3": {
+            "read_count": 9,
+            "write_count": 0,
+            "read_bytes": 13312,
+            "write_bytes": 0,
+            "read_time": 79,
+            "write_time": 0
+        },
+        "loop4": {
+            "read_count": 9,
+            "write_count": 0,
+            "read_bytes": 14336,
+            "write_bytes": 0,
+            "read_time": 152,
+            "write_time": 0
+        },
+        "loop5": {
+            "read_count": 9,
+            "write_count": 0,
+            "read_bytes": 11264,
+            "write_bytes": 0,
+            "read_time": 151,
+            "write_time": 0
+        },
+        "loop6": {
+            "read_count": 9,
+            "write_count": 0,
+            "read_bytes": 12288,
+            "write_bytes": 0,
+            "read_time": 76,
+            "write_time": 0
+        },
+        "loop7": {
+            "read_count": 9,
+            "write_count": 0,
+            "read_bytes": 11264,
+            "write_bytes": 0,
+            "read_time": 204,
+            "write_time": 0
+        },
+        "sda": {
+            "read_count": 153726,
+            "write_count": 671122,
+            "read_bytes": 3397243904,
+            "write_bytes": 13984199680,
+            "read_time": 213080,
+            "write_time": 460157
+        },
+        "sda1": {
+            "read_count": 26,
+            "write_count": 0,
+            "read_bytes": 106496,
+            "write_bytes": 0,
+            "read_time": 5,
+            "write_time": 0
+        },
+        "sda2": {
+            "read_count": 151,
+            "write_count": 2,
+            "read_bytes": 6647808,
+            "write_bytes": 1024,
+            "read_time": 78,
+            "write_time": 0
+        },
+        "sda3": {
+            "read_count": 153456,
+            "write_count": 671120,
+            "read_bytes": 3388699648,
+            "write_bytes": 13984198656,
+            "read_time": 212964,
+            "write_time": 460157
+        },
+        "loop8": {
+            "read_count": 9,
+            "write_count": 0,
+            "read_bytes": 10240,
+            "write_bytes": 0,
+            "read_time": 197,
+            "write_time": 0
+        },
+        "loop9": {
+            "read_count": 9,
+            "write_count": 0,
+            "read_bytes": 17408,
+            "write_bytes": 0,
+            "read_time": 125,
+            "write_time": 0
+        }
+    },
+    "network_info": {
+        "timestamp": "2024-10-14 11:32:14",
+        "interfaces": {
+            "lo": {
+                "addresses": [
+                    {
+                        "family": "2",
+                        "address": "127.0.0.1",
+                        "netmask": "255.0.0.0",
+                        "broadcast": null
+                    },
+                    {
+                        "family": "10",
+                        "address": "::1",
+                        "netmask": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+                        "broadcast": null
+                    },
+                    {
+                        "family": "17",
+                        "address": "00:00:00:00:00:00",
+                        "netmask": null,
+                        "broadcast": null
+                    }
+                ],
+                "is_up": true,
+                "speed_mbps": 0,
+                "mtu": 65536,
+                "packets_sent": 418692,
+                "packets_recv": 418692,
+                "bytes_sent": 63486162,
+                "bytes_recv": 63486162,
+                "err_in": 0,
+                "err_out": 0,
+                "drop_in": 0,
+                "drop_out": 0
+            },
+            "wlx98254a5bcbcd": {
+                "addresses": [
+                    {
+                        "family": "2",
+                        "address": "172.168.20.107",
+                        "netmask": "255.255.255.0",
+                        "broadcast": "172.168.20.255"
+                    },
+                    {
+                        "family": "10",
+                        "address": "fe80::c633:91f2:417f:4c09%wlx98254a5bcbcd",
+                        "netmask": "ffff:ffff:ffff:ffff::",
+                        "broadcast": null
+                    },
+                    {
+                        "family": "17",
+                        "address": "98:25:4a:5b:cb:cd",
+                        "netmask": null,
+                        "broadcast": "ff:ff:ff:ff:ff:ff"
+                    }
+                ],
+                "is_up": true,
+                "speed_mbps": 0,
+                "mtu": 1500,
+                "packets_sent": 52654,
+                "packets_recv": 92584,
+                "bytes_sent": 319506163,
+                "bytes_recv": 2416727093,
+                "err_in": 0,
+                "err_out": 0,
+                "drop_in": 35630,
+                "drop_out": 171
+            },
+            "br-3f9e8ad8364a": {
+                "addresses": [
+                    {
+                        "family": "2",
+                        "address": "172.19.0.1",
+                        "netmask": "255.255.0.0",
+                        "broadcast": "172.19.255.255"
+                    },
+                    {
+                        "family": "17",
+                        "address": "02:42:74:50:2a:59",
+                        "netmask": null,
+                        "broadcast": "ff:ff:ff:ff:ff:ff"
+                    }
+                ],
+                "is_up": false,
+                "speed_mbps": 0,
+                "mtu": 1500,
+                "packets_sent": 0,
+                "packets_recv": 0,
+                "bytes_sent": 0,
+                "bytes_recv": 0,
+                "err_in": 0,
+                "err_out": 0,
+                "drop_in": 0,
+                "drop_out": 0
+            },
+            "docker0": {
+                "addresses": [
+                    {
+                        "family": "2",
+                        "address": "172.17.0.1",
+                        "netmask": "255.255.0.0",
+                        "broadcast": "172.17.255.255"
+                    },
+                    {
+                        "family": "17",
+                        "address": "02:42:3a:5c:9e:8f",
+                        "netmask": null,
+                        "broadcast": "ff:ff:ff:ff:ff:ff"
+                    }
+                ],
+                "is_up": false,
+                "speed_mbps": 0,
+                "mtu": 1500,
+                "packets_sent": 0,
+                "packets_recv": 0,
+                "bytes_sent": 0,
+                "bytes_recv": 0,
+                "err_in": 0,
+                "err_out": 0,
+                "drop_in": 0,
+                "drop_out": 0
+            },
+            "br-c99c6e947283": {
+                "addresses": [
+                    {
+                        "family": "2",
+                        "address": "172.18.0.1",
+                        "netmask": "255.255.0.0",
+                        "broadcast": "172.18.255.255"
+                    },
+                    {
+                        "family": "17",
+                        "address": "02:42:fb:4f:98:69",
+                        "netmask": null,
+                        "broadcast": "ff:ff:ff:ff:ff:ff"
+                    }
+                ],
+                "is_up": false,
+                "speed_mbps": 0,
+                "mtu": 1500,
+                "packets_sent": 0,
+                "packets_recv": 0,
+                "bytes_sent": 0,
+                "bytes_recv": 0,
+                "err_in": 0,
+                "err_out": 0,
+                "drop_in": 0,
+                "drop_out": 0
+            },
+            "enp2s0": {
+                "addresses": [
+                    {
+                        "family": "17",
+                        "address": "98:29:a6:2b:83:05",
+                        "netmask": null,
+                        "broadcast": "ff:ff:ff:ff:ff:ff"
+                    }
+                ],
+                "is_up": false,
+                "speed_mbps": 0,
+                "mtu": 1500,
+                "packets_sent": 0,
+                "packets_recv": 0,
+                "bytes_sent": 0,
+                "bytes_recv": 0,
+                "err_in": 0,
+                "err_out": 0,
+                "drop_in": 0,
+                "drop_out": 0
+            },
+            "wlp3s0": {
+                "addresses": [
+                    {
+                        "family": "17",
+                        "address": "98:22:ef:e8:84:21",
+                        "netmask": null,
+                        "broadcast": "ff:ff:ff:ff:ff:ff"
+                    }
+                ],
+                "is_up": false,
+                "speed_mbps": 0,
+                "mtu": 1500,
+                "packets_sent": 0,
+                "packets_recv": 0,
+                "bytes_sent": 0,
+                "bytes_recv": 0,
+                "err_in": 0,
+                "err_out": 0,
+                "drop_in": 0,
+                "drop_out": 0
+            }
+        }
+    },
+    "sensor_info": {
+        "temperatures": {
+            "pch_skylake": [
+                {
+                    "label": "",
+                    "current": 40.0,
+                    "high": null
+                }
+            ],
+            "coretemp": [
+                {
+                    "label": "Package id 0",
+                    "current": 44.0,
+                    "high": 100.0
+                },
+                {
+                    "label": "Core 0",
+                    "current": 43.0,
+                    "high": 100.0
+                },
+                {
+                    "label": "Core 1",
+                    "current": 42.0,
+                    "high": 100.0
+                },
+                {
+                    "label": "Core 2",
+                    "current": 44.0,
+                    "high": 100.0
+                },
+                {
+                    "label": "Core 3",
+                    "current": 44.0,
+                    "high": 100.0
+                }
+            ],
+            "amdgpu": [
+                {
+                    "label": "edge",
+                    "current": 43.0,
+                    "high": 104000.0
+                }
+            ]
+        },
+        "fans": {},
+        "battery": {
+            "percent": 100.0,
+            "plugged": true,
+            "secsleft": -2
+        }
+    },
+    "resource_usage_info": [
+        {
+            "pid": 4905,
+            "name": "chrome",
+            "cpu_percent": 0.0,
+            "memory_mb": 569.2109375,
+            "status": "sleeping"
+        },
+        {
+            "pid": 298942,
+            "name": "telegram-desktop",
+            "cpu_percent": 0.0,
+            "memory_mb": 510.984375,
+            "status": "sleeping"
+        },
+        {
+            "pid": 306467,
+            "name": "code",
+            "cpu_percent": 0.0,
+            "memory_mb": 491.34375,
+            "status": "sleeping"
+        },
+        {
+            "pid": 2648,
+            "name": "gnome-software",
+            "cpu_percent": 0.0,
+            "memory_mb": 470.05859375,
+            "status": "sleeping"
+        },
+        {
+            "pid": 34659,
+            "name": "chrome",
+            "cpu_percent": 0.0,
+            "memory_mb": 430.1328125,
+            "status": "sleeping"
+        }
+    ],
+    "server_uptime": {
+        "boot_time": "2024-10-13 15:10:08",
+        "current_time": "2024-10-14 11:32:14",
+        "uptime": {
+            "days": 0,
+            "hours": 20,
+            "minutes": 22,
+            "seconds": 6
+        }
+    }
+}
