@@ -16,77 +16,67 @@ from app.helpers.littletools import CRLittletools as crltools
 
 class CRExec:
     TOOLS_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tools")
+    
     def __init__(self):
         self.config = parseconfig()
         self.crstorage = crstorage()
         self.remoteexec = remoteexec()
         self.remoterequire = remoterequire()
-    
-    @staticmethod
-    def _secure_copy_file(sftp, remotepath: str, localpath: str):
-        try:
-            sftp.stat(remotepath)
-            logging.info(f"File {remotepath} already exists on the remote server")
-        except FileNotFoundError:
-            sftp.put(localpath, remotepath)
-            logging.info(f"Uploaded {localpath} to {remotepath}")
 
-    def setup_executor_file(self, ip_address: str):
-        sftp, setup = self.remoterequire.ssh_client_connect(ip_address)
+    async def setup_executor_file(self, ip_address: str):
+        sftp, setup = await self.remoterequire.ssh_client_connect(ip_address)
         if not setup:
-            self.remoterequire.pip_is_installed()
-            self.remoterequire.dir_is_exists(self.config.CHECKER_PATH)
-            self.remoterequire.pip_package(self.config.CHECKER_PATH)
-        
-            [
-                self._secure_copy_file(sftp, crltools.remote_path(file), crltools.local_path(self.TOOLS_PATH, file))
-                for file in crltools.list_file_tools(self.TOOLS_PATH)
+            await self.remoterequire.dir_is_exists(self.config.CHECKER_TOOLS_PATH)
+            list_file_tools = await crltools.list_file_tools(self.TOOLS_PATH)
+            tasks = [
+                self.remoterequire.copy_file(await crltools.local_path(self.TOOLS_PATH, file), await crltools.remote_path(file))
+                for file in list_file_tools
             ]
+            await asyncio.gather(*tasks)
+            await self.remoterequire.pip_is_installed()
+            await self.remoterequire.pip_package(self.config.CHECKER_TOOLS_PATH)
 
-        # if(self.config.VERSION != self.crstorage.get_latest_version()):
-        #     ...
-    
-    def execute_tools_remote(self, file, **action):
-        result = self.remoterequire.execute_tools(crltools.remote_path(file), **action)
-        result = ast.literal_eval(result)
-        return result
+    async def execute_tools(self, **action):
+        file = await crltools.remote_path("ceker.py")
+        result = await self.remoterequire.execute_tools(file, **action)
+        return ast.literal_eval(result)
     
     @staticmethod
-    def process_batch(batch):
+    async def process_batch(batch):
         servers_status = []
         for server in batch:
-            # Ambil status server menggunakan SSH
+
             serverstatus = crserverstatus(
                 server["ip_address"],
                 ssh_username=server["username"],
                 ssh_password=server["password"]
             )
-            # Format data server dalam JSON
-            server_status = crltools.to_json(
+            server_status = await crltools.to_json(
                 id=server["id"],
+                labels=[server["label"]],
                 ip_address=server["ip_address"],
-                username=server["username"],
-                password=server["password"]
+                username=server["username"]
             )
-            server_status.update(serverstatus.get_server_status())
+            server_status.update(await serverstatus.get_server_status())
             servers_status.append(server_status)
         return servers_status
 
     @staticmethod
-    def chunk_list(lst, n):
-        """Membagi list menjadi batch dengan ukuran n."""
+    async def chunk_list(lst, n):
+        if asyncio.iscoroutine(lst):
+            lst = await lst
         for i in range(0, len(lst), n):
             yield lst[i:i + n]
 
     async def all_servers_status_perbatch(self):
-        servers = self.crstorage.get_auth_server()
-        
-        # Here, chunk the servers list into batches of exactly 12
+        await self.crstorage.connect()
+        servers = await self.crstorage.get_auth_server()
+        # servers = self.crstorage.get_all_servers("dict")
         chunk_size = 12
-        server_batches = list(self.chunk_list(servers, chunk_size))
+        server_batches = [chunk async for chunk in self.chunk_list(servers, chunk_size)]
 
         async def process_batch_async(batch):
-            return await asyncio.to_thread(self.process_batch, batch)
+            return await self.process_batch(batch)
 
         tasks = [process_batch_async(batch) for batch in server_batches]
         
@@ -94,28 +84,16 @@ class CRExec:
             yield await result
 
     async def all_servers_status(self):
-        servers = self.crstorage.get_auth_server()
+        await self.crstorage.connect()
+        # servers = self.crstorage.get_all_servers("dict")
+        servers = await self.crstorage.get_auth_server()
         chunk_size = 12
-        server_batches = list(self.chunk_list(servers, chunk_size))
+        server_batches = [chunk async for chunk in self.chunk_list(servers, chunk_size)]
+
         async def process_batch_async(batch):
-            return await asyncio.to_thread(self.process_batch, batch)
+            return await self.process_batch(batch)
+
         tasks = [process_batch_async(batch) for batch in server_batches]
         results = await asyncio.gather(*tasks)
         servers_status = [status for result in results for status in result]
         return servers_status
-    # def all_servers_status(self):
-    #     servers = self.crstorage.get_auth_server()
-        
-    #     chunk_size = max(1, len(servers) // 12)
-
-    #     server_batches = list(self.chunk_list(servers, chunk_size))
-        
-    #     
-    #     with ThreadPoolExecutor(max_workers=min(12, len(server_batches))) as executor:
-    #         futures = {executor.submit(self.process_batch, batch): batch for batch in server_batches}
-            
-    #         for future in as_completed(futures):
-    #             yield future.result()
-        #         servers_status.extend(future.result())
-        
-        # return servers_status

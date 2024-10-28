@@ -29,7 +29,6 @@ class ResourceGetter:
         net_if_stats = psutil.net_if_stats()
 
         network_data = {
-            "timestamp": datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
             "interfaces": {}
         }
 
@@ -247,14 +246,33 @@ def main():
     resource_getter = ResourceGetter()
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument(
-        "--action", choices=["detail", "simple"], default="detail", required=True
+        "--action", choices=[
+            "system_info", "network_info", "cpu_info", "memory_info", "disk_info",
+            "disk_io_info", "server_uptime", "gpu_info", "sensor_info", "detailed_resource_usage"
+            ], required=True
     )
 
     args = arg_parser.parse_args()
-    if args.action == "detail":
-        result = resource_getter.resource_info()
-    elif args.action == "simple":
-        result = resource_getter.simple_resource_info()
+    if args.action == "system_info":
+        result = resource_getter.get_system_info()
+    elif args.action == "network_info":
+        result = resource_getter.get_network_info()
+    elif args.action == "cpu_info":
+        result = resource_getter.get_cpu_info()
+    elif args.action == "memory_info":
+        result = resource_getter.get_memory_info()
+    elif args.action == "disk_info":
+        result = resource_getter.get_disk_info()
+    elif args.action == "disk_io_info":
+        result = resource_getter.get_disk_io_info()
+    elif args.action == "server_uptime":
+        result = resource_getter.get_server_uptime()
+    elif args.action == "gpu_info":
+        result = resource_getter.get_gpu_info()
+    elif args.action == "sensor_info":
+        result = resource_getter.get_sensor_info()
+    elif args.action == "detailed_resource_usage":
+        result = resource_getter.get_detailed_resource_usage()
     print(result)
 
 
