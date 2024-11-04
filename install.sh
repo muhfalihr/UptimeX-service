@@ -1,13 +1,11 @@
 #!/bin/sh
-
-USER=$(whoami)
-
 if [ "$(id -u)" -ne 0 ]; then
     echo "This script must be run as root or with sudo privileges."
     exit 1
 fi
 
 CURRENT_PATH=$(pwd)
+CURRENT_USER=$(whoami)
 # echo "export CHECKER_PATH=\"$CURRENT_PATH\"" >> ~/.zshrc
 # exec zsh
 
@@ -47,7 +45,7 @@ CREATE TABLE IF NOT EXISTS passwords (
 );
 
 CREATE TABLE IF NOT EXISTS server_management (
-    id TEXT PRIMARY KEY DEFAULT (substr('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', abs(random()) % 62 + 1, 1) || 
+    id TEXT PRIMARY KEY DEFAULT (
         substr('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', abs(random()) % 62 + 1, 1) || 
         substr('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', abs(random()) % 62 + 1, 1) || 
         substr('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', abs(random()) % 62 + 1, 1) || 
@@ -56,13 +54,18 @@ CREATE TABLE IF NOT EXISTS server_management (
         substr('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', abs(random()) % 62 + 1, 1) || 
         substr('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', abs(random()) % 62 + 1, 1) || 
         substr('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', abs(random()) % 62 + 1, 1) || 
-        substr('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', abs(random()) % 62 + 1, 1)),
+        substr('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', abs(random()) % 62 + 1, 1) || 
+        substr('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', abs(random()) % 62 + 1, 1)
+    ),
     username VARCHAR(100) NOT NULL DEFAULT 'root',  
     ip_address VARCHAR(45) UNIQUE NOT NULL,
     label TEXT NOT NULL,
     password VARCHAR(100) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    server_id TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (server_id) REFERENCES servers (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
 
 CREATE TABLE server_status (
     id TEXT PRIMARY KEY DEFAULT (substr('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', abs(random()) % 62 + 1, 1) || 
@@ -87,7 +90,7 @@ CREATE TABLE IF NOT EXISTS versions (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 EOF
-chown $USER:$USER $DB_NAME
+sudo chown -R $CURRENT_USER:$CURRENT_USER "$DB_NAME"
 
 echo "Tables 'servers', 'authservers', and 'versions' have been successfully created in $DB_NAME."
 

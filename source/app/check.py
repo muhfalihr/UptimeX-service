@@ -24,21 +24,25 @@ class CRExec:
         self.remoterequire = remoterequire()
 
     async def setup_executor_file(self, ip_address: str):
-        sftp, setup = await self.remoterequire.ssh_client_connect(ip_address)
-        if not setup:
-            await self.remoterequire.dir_is_exists(self.config.CHECKER_TOOLS_PATH)
-            list_file_tools = await crltools.list_file_tools(self.TOOLS_PATH)
-            tasks = [
-                self.remoterequire.copy_file(await crltools.local_path(self.TOOLS_PATH, file), await crltools.remote_path(file))
-                for file in list_file_tools
-            ]
-            await asyncio.gather(*tasks)
-            await self.remoterequire.pip_is_installed()
-            await self.remoterequire.pip_package(self.config.CHECKER_TOOLS_PATH)
+        await self.remoterequire.ssh_client_connect(ip_address)
+        # if not setup:
+        await self.remoterequire.setup_directory(self.config.CHECKER_TOOLS_PATH)
+        list_file_tools = await crltools.list_file_tools(self.TOOLS_PATH)
+        tasks = [
+            self.remoterequire.copy_file(await crltools.local_path(self.TOOLS_PATH, file), await crltools.remote_path(file))
+            for file in list_file_tools
+        ]
+        await asyncio.gather(*tasks)
+    
+    async def destroy_setup_exec_file(self, ip_address: str):
+        await self.remoterequire.ssh_client_connect(ip_address)
+        await self.remoterequire.destroy_directory(self.config.CHECKER_TOOLS_PATH)
 
-    async def execute_tools(self, **action):
-        file = await crltools.remote_path("ceker.py")
-        result = await self.remoterequire.execute_tools(file, **action)
+    # async def execute_tools(self, **action):
+    async def execute_tools(self):
+        file = await crltools.remote_path("checker")
+        # result = await self.remoterequire.execute_tools(file, **action)
+        result = await self.remoterequire.execute_tools(file)
         return ast.literal_eval(result)
     
     @staticmethod
@@ -82,11 +86,13 @@ class CRExec:
         
         for result in asyncio.as_completed(tasks):
             yield await result
+        await self.crstorage.close()
 
     async def all_servers_status(self):
         await self.crstorage.connect()
         # servers = self.crstorage.get_all_servers("dict")
         servers = await self.crstorage.get_auth_server()
+        await self.crstorage.close()
         chunk_size = 12
         server_batches = [chunk async for chunk in self.chunk_list(servers, chunk_size)]
 

@@ -84,7 +84,9 @@ async def settings_server_management(
     )
     await crstorage.insert_server([data])
     await crstorage.insert_auth_server([data])
+    await crstorage.close()
     del data["password"]
+    await check.setup_executor_file(ip_address)
     return JSONResponse(
         status_code=status.HTTP_201_CREATED,
         content= await crlt.to_json(
@@ -107,6 +109,8 @@ async def settings_server_management_edit(
         label=label
     )
     await crstorage.update_server(data)
+    await crstorage.update_auth_server(data)
+    await crstorage.close()
     return JSONResponse(
         status_code=status.HTTP_201_CREATED,
         content= await crlt.to_json(
@@ -118,9 +122,15 @@ async def settings_server_management_edit(
     )
 
 @app.delete("/settings/server_management/delete", tags=["ServerManagement"])
-async def settings_server_management_delete(id: Annotated[str, Form()]) ->  ResponseSettingsServerManagementSuccess:
+async def settings_server_management_delete(
+    id: Annotated[str, Form()],
+    ip_address: Annotated[str, Form(..., regex=r'^(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$')]
+    ) ->  ResponseSettingsServerManagementSuccess:
     await crstorage.connect()
     await crstorage.delete_server(id)
+    await crstorage.delete_auth_server(id)
+    await crstorage.close()
+    await check.destroy_setup_exec_file(ip_address)
     return JSONResponse(
         status_code=status.HTTP_200_OK,
         content= await crlt.to_json(
@@ -135,6 +145,7 @@ async def settings_server_management_delete(id: Annotated[str, Form()]) ->  Resp
 async def settings_server_management_get() -> ResponseSettingsServerManagementSuccess:
     await crstorage.connect()
     data = await crstorage.get_all_servers('dict')
+    await crstorage.close()
     return JSONResponse(
         status_code=status.HTTP_200_OK,
         content= await crlt.to_json(

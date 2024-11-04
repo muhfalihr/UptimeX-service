@@ -5,7 +5,6 @@ import socket
 import time
 
 from app.helpers.littletools import CRLittletools as crlt
-from app.library.storage import CRStorage as crstorage
 
 class CRServerStatus:
     def __init__(self, hostname, ssh_port=22, ssh_username=None, ssh_password=None, ping_timeout=5, ssh_timeout=10):

@@ -44,33 +44,36 @@ cwsmanager = ConnectionWSManager()
 
 @app.get("/servers/list", tags=["Servers"])
 async def servers_list() -> ResponseServerList:
+    servers_list = await crstorage.get_all_servers("dict")
+    await crstorage.close()
     return ResponseServerList(
-        server_list=await crstorage.get_all_servers("dict"), 
+        server_list=servers_list, 
         timestamp=datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
     )
 
-@app.get("/servers/system_info", tags=["Servers"])
-async def servers_system_info(params: Annotated[InfoParams, Query()]) -> ResponseServerSystemInfo:
-    await check.setup_executor_file(params.ip_address)
-    return ResponseServerSystemInfo(
-        system_info=await check.execute_tools(action="system_info"),
-        timestamp=datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
-    )
+# @app.get("/servers/system_info", tags=["Servers"])
+# async def servers_system_info(params: Annotated[InfoParams, Query()]) -> ResponseServerSystemInfo:
+#     await check.setup_executor_file(params.ip_address)
+#     await crstorage.close()
+#     return ResponseServerSystemInfo(
+#         system_info=await check.execute_tools(action="system_info"),
+#         timestamp=datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+#     )
 
-@app.websocket("/servers/network_info")
-async def servers_network_info(websocket: WebSocket, params: Annotated[InfoParams, Query()]) -> ResponseNetworkInfo:
-    await cwsmanager.connect(websocket)
-    await check.setup_executor_file(params.ip_address)
-    try:
-        while True:
-            message = await crlt.to_json(
-                network_info=await check.execute_tools(action="network_info"),
-                timestamp=datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
-            )
-            await cwsmanager.send_personal_message(message, websocket)
-            await asyncio.sleep(1)
-    except WebSocketDisconnect:
-        cwsmanager.disconnect(websocket)
+# @app.websocket("/servers/network_info")
+# async def servers_network_info(websocket: WebSocket, params: Annotated[InfoParams, Query()]) -> ResponseNetworkInfo:
+#     await cwsmanager.connect(websocket)
+#     await check.setup_executor_file(params.ip_address)
+#     try:
+#         while True:
+#             message = await crlt.to_json(
+#                 network_info=await check.execute_tools(action="network_info"),
+#                 timestamp=datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+#             )
+#             await cwsmanager.send_personal_message(message, websocket)
+#             await asyncio.sleep(1)
+#     except WebSocketDisconnect:
+#         cwsmanager.disconnect(websocket)
 
 @app.websocket("/ws/servers/list/status")
 async def servers_list_status(websocket: WebSocket) -> ResponseServerStatus:
@@ -96,6 +99,6 @@ async def servers_list_status(websocket: WebSocket) -> ResponseServerStatus:
                     timestamp=datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
                 )
                 await cwsmanager.send_personal_message(message, websocket)
-            await asyncio.sleep(1)
+            await asyncio.sleep(10)
     except WebSocketDisconnect:
         cwsmanager.disconnect(websocket)

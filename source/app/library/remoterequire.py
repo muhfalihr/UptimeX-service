@@ -99,7 +99,15 @@ class RemoteRequire(RemoteEXec):
             logging.info(f"Successfully created directory: {directory}")
         else:
             logging.error(f"Failed to create directory: {directory}")
-        return result
+
+    async def remove_directory(self,  directory: str) -> str:
+        if self.connection is None:
+            logging.warning("Transport is not connected")
+        result = await self.execute_command(f"rm -rf {directory}")
+        if result:
+            logging.info(f"Successfully remove directory: {directory}")
+        else:
+            logging.error(f"Failed to removecreate directory: {directory}")
 
     async def added_env(self, version: str):
         if self.connection is None:
@@ -140,7 +148,7 @@ class RemoteRequire(RemoteEXec):
         else:
             logging.error(f"Failed to install missing packages")
 
-    async def dir_is_exists(self, directory: str):
+    async def setup_directory(self, directory: str):
         if self.connection is None:
             logging.warning("Transport is not connected")
         if await self.status_directory(directory) == "not_exists":
@@ -148,14 +156,25 @@ class RemoteRequire(RemoteEXec):
             await self.create_directory(directory)
         else:
             logging.info(f"Directory '{directory}' already exists")
-
-    async def execute_tools(self, file: str, **action):
-        action_type = action.get("action", None)
+    
+    async def destroy_directory(self, directory: str):
         if self.connection is None:
             logging.warning("Transport is not connected")
-        if not action_type:
-            logging.error("Action argument empty")
-            return
-        command = f"{await self.which_pkg('python3')} {file} --action {action_type}"
-        result = await self.execute_command(command)
+        if await self.status_directory(directory) == "not_exists":
+            logging.info(f"Directory '{directory}' does not exist")
+        else:
+            logging.info(f"Directory '{directory}' already exists")
+            await self.remove_directory(directory)
+
+
+    # async def execute_tools(self, file: str, **action):
+    async def execute_tools(self, file: str):
+        # action_type = action.get("action", None)
+        if self.connection is None:
+            logging.warning("Transport is not connected")
+        # if not action_type:
+        #     logging.error("Action argument empty")
+        #     return
+        # command = f"{await self.which_pkg('python3')} {file} --action {action_type}"
+        result = await self.execute_command(file)
         return result

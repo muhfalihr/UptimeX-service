@@ -1,10 +1,8 @@
 import logging
 import asyncssh
 
-from typing import Dict, Any
-from .hydra import get_password
 from .storage import CRStorage as crstorage
-from app.helpers.littletools import CRLittletools as crltools
+from tenacity import retry, stop_after_attempt, wait_fixed, retry_if_exception_type
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
@@ -16,9 +14,15 @@ class RemoteEXec:
         self.connection = None
         self.crstorage = crstorage()
 
+    @retry(
+            stop=stop_after_attempt(5),
+            wait=wait_fixed(1),
+            retry=retry_if_exception_type(ConnectionResetError)
+    )
     async def ssh_client_connect(self, server: str, user: str = "root"):
         await self.crstorage.connect()
         access = await self.crstorage.get_auth_specific_server(server)
+        await self.crstorage.close()
         if access:
             try:
                 logging.info(
@@ -31,42 +35,13 @@ class RemoteEXec:
                     known_hosts=None,
                 )
                 logging.info(f"Successfully connected to {access['ip_address']}.")
-                return self.connection, True
             except asyncssh.ProcessError:
                 logging.warning(
                     f"Cached credentials failed for {access['ip_address']}. Attempting with other credentials..."
                 )
-
         logging.info(
             f"No valid cached credentials found for '{server}'. Trying stored passwords..."
         )
-
-        password = get_password(user, server, threads=64)
-        try:
-            logging.info(
-                f"Attempting to connect to '{server}' with provided password..."
-            )
-            self.connection = await asyncssh.connect(
-                server, username=user, password=password, known_hosts=None
-            )
-            await self.crstorage.insert_auth_server(server, password)
-            logging.info(
-                f"Successfully connected to '{server}' and cached the new credentials."
-            )
-            return self.connection, False
-        except asyncssh.ProcessError:
-            logging.warning(
-                f"Authentication failed for '{server}' with provided password."
-            )
-        except Exception as e:
-            logging.error(
-                f"An unexpected error occurred while connecting to '{server}': {e}"
-            )
-
-        logging.error(
-            f"Failed to connect to '{server}' with all available credentials."
-        )
-        return None, False
 
     async def execute_command_with_log(self, command):
         """Execute command on SSH with real-time logging of stdout and stderr."""
